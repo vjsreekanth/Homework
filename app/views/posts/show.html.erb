@@ -1,0 +1,58 @@
+
+<div class="container">
+  <div class="container">
+    <h1> <%= @post.title %> </h1>
+
+    <p><%= @post.body %></p>
+
+    <p>Posted <%= time_ago_in_words(@post.created_at) %> ago</p>
+  </div>
+
+   
+   <div class="container">
+      <%# link_to() just creates a anchor tag with the appropriate href. The 3rd argument is a optional options hash which can have a :method key; If a :method key is provided Rails will set a data-method attribute to the a tag and adds some additional javascript to the page which makes the anchor tag use the specified http method instead of the default GET. (Basically Rails Magic) %>
+      <%# https://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to %>
+      <%# passing a value (number/string) to a helper method like `product_path` will return a path with the value appended to the path. Helper paths automatically grab and use the id if it's given a instance %>
+      <%= link_to(
+        "Delete",
+        post_path(@post),
+        method: :delete,
+        class: 'btn btn-danger',
+        data: { confirm: 'are you sure?' },
+        )
+      %>
+      <%= link_to "Edit", edit_post_path(@post), class: 'btn btn-info'%>
+   </div><br>
+
+    
+    <div class=container>
+      <%= form_with model: [@post, @comment], local: true do |f| %>
+        <h3>Comment</h3>
+        <div class='form-group'>
+          
+          <%= f.text_area(:body, class: 'form-control', placeholder: "What's on your mind?" )%>
+        </div>
+        <%= f.submit class: 'btn btn-primary' %>
+      <% end %>
+    </div><br>
+
+    
+
+    <% @post.comments.each do |comment| %>
+    <div class=container>
+        <p> <%= comment.body %> </p>
+        <small>
+          <p> Commented <%= time_ago_in_words(comment.created_at) %> ago -
+          <%= link_to(
+                "Delete",
+                post_comment_path(@post, comment),
+                method: :delete,
+                data: { confirm: 'delete this comment?' }
+                )
+              %></p>
+          </small>
+    </div>
+    <% end %>
+</div>
+  
+  

@@ -1,0 +1,30 @@
+<h1>All Posts</h1>
+
+
+
+ 
+
+<div class="card-deck">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+    <% @posts.each do |post| %>
+    
+    <div class="col mb-4">
+        <div class="card overflow-hidden" style="height:100px; width:20rem">
+          <div class="card-body">
+            <h5 class="card-title"> <%= link_to post.title, post_path(post) %> </h5>
+            <p class="card-text overflow-ellipsis"> <%= post.body %> </p>
+          </div>
+        </div>
+    </div>
+      <% end%>
+  </div>
+</div>
+
+
+
+
+  
+
+
+
+ 
