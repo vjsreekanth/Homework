@@ -1,4 +1,7 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user!, except: [:show, :index]
+  before_action :find_post, only: [:show, :edit, :update, :destroy]
+  before_action :authorize, only: [:edit, :update, :destroy] 
 
     def new
         @post = Post.new
@@ -6,7 +9,7 @@ class PostsController < ApplicationController
 
     def create
         @post = Post.new post_params
-        # @post.user = current_user
+        @post.user = current_user
     
         if @post.save
           flash[:primary] = "#{@post.title} created"
@@ -27,7 +30,7 @@ class PostsController < ApplicationController
     end
 
     def edit
-      @post = Post.find(params[:id])
+      # @post = Post.find(params[:id])
     end
     
     def update
@@ -55,5 +58,12 @@ class PostsController < ApplicationController
     
       def find_post
         @post = Post.find params[:id]
+      end
+
+      def authorize
+        unless can?(:crud, @post)
+          flash[:danger] = "Not Authorized"
+          redirect_to root_path
+        end
       end
 end

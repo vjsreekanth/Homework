@@ -3,9 +3,11 @@ Rails.application.routes.draw do
 # Home page
   get("/", { to: "posts#index", as: "root" })
 
-  resources :posts do
+    resources :posts do
     resources :comments, only: [:create, :destroy]
+    end
+    
+    resources :users, only: [:new, :create]
+    resource :session, only: [:new, :destroy, :create]
 
-  end
-  
 end
